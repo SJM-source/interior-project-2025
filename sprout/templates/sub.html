@@ -16,6 +16,58 @@
     </div>
 </div>
 
+<!-- 추천상품 섹션 (새로 추가) -->
+{% if recommended_products %}
+<div class="recommendation-section">
+    <div class="container-fluid">
+        <div class="recommendation-header">
+          <h2 class="recommendation-title">
+                        {% if g.user %}
+                        {{ g.user.username }}님을 위한 추천
+                        {% else %}
+                        회원님을 위한 추천
+                        {% endif %}
+                    </h2>
+            <p class="recommendation-subtitle">최근 본 상품의 스타일을 기반으로 선정했어요</p>
+        </div>
+
+        <div class="recommendation-grid">
+            {% for product in recommended_products %}
+            <a href="{{ url_for('product_detail', product_id=product.id) }}" onclick="addToViewedProducts({{ product.id }})">
+                <article class="recommendation-card">
+                    <div class="recommendation-badge">추천</div>
+                    <div class="product-image position-relative">
+                        <img
+                            src="{{ product.image_url }}"
+                            alt="{{ product.name }}"
+                            loading="lazy"
+                            onerror="this.src='/static/img/placeholder.png'"
+                        >
+                        <button
+                            class="btn btn-link position-absolute p-0 border-0 wishlist-btn"
+                            style="bottom: 10px; right: 10px; background-color: rgba(255, 255, 255, 0.9); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;"
+                            data-product-id="{{ product.id }}"
+                            onclick="toggleWishlist(event, {{ product.id }})"
+                        >
+                            <i class="bi bi-heart" style="font-size: 18px; color: #333;"></i>
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        <p class="product-brand mb-1">{{ product.brand }}</p>
+                        <h3 class="product-name">{{ product.name }}</h3>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <p class="product-price mb-0">{{ "{:,}".format(product.price) }}원</p>
+                            <span class="style-badge">{{ product.style }}</span>
+                        </div>
+                    </div>
+                </article>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
 <!-- 섹션_cb: 전체 타이틀과 검색창 -->
 <div class="section_cb">
     <!-- 상단 타이틀/검색 -->
