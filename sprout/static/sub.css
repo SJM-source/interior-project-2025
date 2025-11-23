@@ -55,6 +55,101 @@ body {
     color: #ffffff;
 }
 
+/* ===== 추천상품 섹션 ===== */
+.recommendation-section {
+  width: 100%;
+  background-color: #ffffff;
+  padding: 60px 0;
+  margin-bottom: 40px;
+}
+
+.recommendation-section .container-fluid {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 80px;
+}
+
+.recommendation-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.recommendation-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #212529;
+  margin-bottom: 8px;
+}
+
+.recommendation-subtitle {
+  font-size: 15px;
+  color: #6c757d;
+  margin: 0;
+}
+
+/* 추천상품 그리드 - 5개 가로 정렬 */
+.recommendation-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+  justify-content: center;
+}
+
+.recommendation-grid a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.recommendation-grid a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 추천상품 카드 */
+.recommendation-card {
+  width: 100%;
+  max-width: 270px;
+  height: 370px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-5px);
+}
+
+/* 추천 배지 */
+.recommendation-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background-color: rgba(245, 235, 220, 0.9);
+  color: #5d4e37;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  z-index: 10;
+  border: 1px solid #e0e0e0;
+}
+
+/* 스타일 배지 */
+.style-badge {
+  font-size: 11px;
+  color: #6c757d;
+  background-color: #f8f9fa;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
 /* section_tb - 양옆 여백 추가 및 배경색 흰색 */
 .section_cb {
   width: 100%;
@@ -260,5 +355,3 @@ body {
   z-index: 10;
   flex-shrink: 0;
 }
-
-/* 반응형은 제거 - 5x5 고정 유지 */
