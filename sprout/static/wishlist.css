@@ -1,0 +1,266 @@
+/* wishlist / 장바구니 페이지 전용 스타일 */
+
+/* 전체 컨테이너 여백 */
+.wishlist-container {
+    max-width: 1400px;
+    margin-top: 150px;
+    margin-bottom: 3rem;
+}
+
+/* 장바구니 아이템 래퍼 */
+.cart-item-row {
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background-color: #ffffff;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.cart-item-inner {
+    padding: 1.25rem 1.5rem;
+}
+
+/* 상품 썸네일 */
+.cart-item-thumb img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    background-color: #f7f7f7;
+    cursor: pointer;
+}
+
+/* 상품 텍스트 정보 */
+.cart-item-brand {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.cart-item-name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.cart-item-meta {
+    font-size: 0.8rem;
+}
+
+/* 옵션/수량/가격 라인 */
+.cart-item-option-row {
+    gap: 1rem;
+}
+
+.cart-item-option {
+    font-size: 0.85rem;
+}
+
+.cart-item-quantity-control button {
+    min-width: 32px;
+    height: 32px;
+    padding: 0;
+    line-height: 1;
+}
+
+.cart-item-quantity {
+    min-width: 24px;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.cart-item-price {
+    min-width: 120px;
+    font-size: 1rem;
+}
+
+/* 체크박스 선택 색상 */
+.form-check-input:checked {
+    background-color: rgba(220, 200, 180, 0.9);
+    border-color: rgba(220, 200, 180, 0.9);
+}
+
+/* 하단 액션 */
+.cart-item-actions .btn-link {
+    font-size: 0.85rem;
+}
+
+/* 비어있는 장바구니 */
+.empty-cart {
+    border-radius: 10px;
+    border: 1px dashed #d1d5db;
+    background-color: #f9fafb;
+}
+
+/* 결제 정보 카드 - 스크롤 sticky */
+.wishlist-summary-section {
+    position: sticky;
+    top: 120px;
+    transition: top 0.3s ease;
+}
+
+.wishlist-summary-section.sticky {
+    position: fixed;
+    top: 120px;
+    width: 380px;
+    z-index: 1000;
+}
+
+.wishlist-summary-section .card {
+    border-radius: 12px;
+}
+
+.wishlist-summary-section .card-title {
+    font-size: 1.05rem;
+}
+
+/* 최근 본 상품 */
+.wishlist-recent-section {
+    margin-top: 3rem;
+}
+
+.wishlist-recent-section .card {
+    border-radius: 10px;
+}
+
+.viewed-item-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.viewed-item-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+/* 최근 본 상품 가로 스크롤 */
+.viewed-products-horizontal {
+    overflow-x: auto;
+    padding-bottom: 1rem;
+}
+
+.viewed-products-horizontal::-webkit-scrollbar {
+    height: 6px;
+}
+
+.viewed-products-horizontal::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.viewed-products-horizontal::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.viewed-products-horizontal::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.viewed-products-track {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 0;
+}
+
+.viewed-product-item {
+    flex: 0 0 200px;
+}
+
+/* 최근 본 상품 하트 아이콘 */
+.viewed-wishlist-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.viewed-wishlist-btn:hover {
+    transform: scale(1.1);
+}
+
+.viewed-wishlist-btn .bi-heart-fill {
+    color: #dc3545 !important;
+}
+
+.viewed-wishlist-btn i {
+    font-size: 18px;
+    color: #333;
+}
+
+/* 페이지네이션 스타일 */
+.pagination-wrapper {
+    width: 100%;
+    background-color: #fff;
+    padding: 30px 0;
+    margin: 0;
+}
+
+.pagination {
+    margin-bottom: 0;
+}
+
+.pagination .page-link {
+    color: #333;
+    border: 1px solid #dee2e6;
+    padding: 8px 16px;
+    margin: 0 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.pagination .page-link:hover {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+    color: #333;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #212529;
+    border-color: #212529;
+    color: white;
+    z-index: 1;
+}
+
+.pagination .page-item.disabled .page-link {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: white;
+    border-color: #dee2e6;
+}
+
+/* 반응형 조정 */
+@media (max-width: 991.98px) {
+    .wishlist-container {
+        margin-top: 110px;
+    }
+
+    .cart-item-inner {
+        padding: 1rem;
+    }
+
+    .cart-item-thumb img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .viewed-product-item {
+        flex: 0 0 180px;
+    }
+
+    .wishlist-summary-section.sticky {
+        position: static;
+        width: auto;
+    }
+}
