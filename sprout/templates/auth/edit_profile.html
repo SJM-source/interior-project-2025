@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
+
+<div class="container-fluid">
+    <div class="row min-vh-100">
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+            <div class="login-container w-75">
+                <h2 class="text-center mb-4">회원정보 수정</h2>
+
+                <!-- 프로필 사진 영역 -->
+                <div class="text-center mb-4">
+                    <div class="position-relative d-inline-block">
+                        <div class="rounded-circle overflow-hidden" style="width: 120px; height: 120px; background-color: #f5f5f5;">
+                            <img id="profileImage"
+                                 src="{{ g.user.profile_image if g.user.profile_image else 'https://prs.ohousecdn.com/apne2/user/images/user-profile/v1-438811778732160.png' }}"
+                                 alt="프로필 이미지"
+                                 class="w-100 h-100 object-fit-cover">
+                        </div>
+                        <label for="profileUpload"
+                               class="position-absolute bottom-0 end-0 bg-dark text-white rounded-circle p-2 d-flex align-items-center justify-content-center"
+                               style="cursor: pointer; width: 36px; height: 36px;">
+                            <i class="bi bi-camera-fill d-block" style="font-size: 16px; line-height: 1;"></i>
+                        </label>
+                        <input type="file"
+                               id="profileUpload"
+                               name="profile_image_file"
+                               accept="image/*"
+                               class="d-none"
+                               form="editProfileForm">
+                        {% if g.user.profile_image %}
+                        <button type="button"
+                                id="deleteProfileImage"
+                                class="btn btn-danger btn-sm position-absolute top-0 end-0 mt-1 me-1"
+                                style="width: 24px; height: 24px; padding: 0; border-radius: 50%;">
+                            <i class="bi bi-x" style="font-size: 12px;"></i>
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <form id="editProfileForm" method="post" enctype="multipart/form-data">
+                    {{ form.csrf_token }}
+                    {% include 'form_errors.html' %}
+                    <input type="hidden" id="deleteImageFlag" name="delete_image" value="false">
+
+                    <div class="form-group mb-3">
+                        <label>*사용자 이름</label>
+                        <input type="text" name="username" class="form-control"
+                               value="{{ form.username.data }}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label>이메일</label>
+                        <input type="email" name="email" class="form-control"
+                               value="{{ form.email.data or '' }}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label>전화번호</label>
+                        <input type="tel" name="phone" class="form-control"
+                               value="{{ form.phone.data or '' }}">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label>새 비밀번호 (선택)</label>
+                        <input type="password" name="password" class="form-control"
+                               placeholder="새 비밀번호를 입력하세요 (선택)">
+                    </div>
+
+                    <button type="submit" class="login-btn w-100 d-flex justify-content-center">
+                        저장하기
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm mt-2" onclick="certifyPhone()">
+                        전화번호 본인 인증
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-6 d-flex align-items-center justify-content-center p-0">
+            <img src="{{ url_for('static', filename='image/detail.jpg') }}"
+                 class="img-fluid login-image"
+                 style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script src="{{ url_for('static', filename='edit_profile.js') }}"></script>
+{% endblock %}
