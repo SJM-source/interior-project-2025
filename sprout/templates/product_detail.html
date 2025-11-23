@@ -1,18 +1,39 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <div class="container my-5">
-        <div class="row">
-            <div class="col-md-6">
-                <img src="{{ product.image_url }}"
-                     alt="{{ product.name }}" class="img-fluid rounded shadow-sm">
-            </div>
-            <div class="col-md-6 d-flex align-items-center">
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ product.image_url }}"
+                 alt="{{ product.name }}" class="img-fluid rounded shadow-sm">
+        </div>
+        <div class="col-md-6 d-flex align-items-center">
             <div class="w-100">
                 <h2 class="fw-bold">{{ product.name }}</h2>
                 <p class="text-muted mb-2">Brand: {{ product.brand }}</p>
-                <h4 class="text-dark mb-3">Price: {{ "{:,}".format(product.price) }}원</h4>
+                <h4 class="text-dark mb-3">
+                    Price: <span id="total-price">{{ "{:,}".format(product.price) }}</span>원
+                </h4>
                 <p>{{ product.description }}</p>
+
+                <!-- 수량 조절 바 -->
+                <div class="quantity-control mb-2 d-flex align-items-center">
+                    <span class="small text-muted me-3">수량</span>
+                    <button class="btn btn-sm btn-outline-secondary quantity-decrease"
+                            data-product-id="{{ product.id }}">
+                        <i class="bi bi-dash"></i>
+                    </button>
+
+                    <span id="quantity-display" class="mx-2" style="min-width: 30px; text-align: center;">
+                        1
+                    </span>
+
+                    <button class="btn btn-sm btn-outline-secondary quantity-increase"
+                            data-product-id="{{ product.id }}">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
+
                 <button type="button" class="btn btn-dark mt-3" style="width: 200px;">
                     구매하기
                 </button>
@@ -20,4 +41,12 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+  window.pricePerUnit = {{ product.price }};
+</script>
+<script src="{{ url_for('static', filename='product_detail.js') }}"></script>
 {% endblock %}
