@@ -14,6 +14,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     phone = db.Column(db.String(20), nullable=True)
     address = db.Column(db.String(300), nullable=True)
+    profile_image = db.Column(db.Text, nullable=True)
     created_date = db.Column(db.DateTime, nullable=False, default=datetime.now)
 
     # 관계: user.cart로 장바구니 조회 가능 (1:1 관계)
