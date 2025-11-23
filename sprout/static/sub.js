@@ -68,6 +68,28 @@ function resetCheckboxFilter(formSelector, dropdownId) {
   if (dropdownInstance) dropdownInstance.hide();
 }
 
+// 장바구니 배지 업데이트 함수
+function updateCartBadge(count) {
+    const cartBadge = document.getElementById('cartBadge');
+    if (cartBadge) {
+        if (count > 0) {
+            cartBadge.textContent = count;
+            cartBadge.style.display = 'flex';
+        } else {
+            cartBadge.style.display = 'none';
+        }
+    }
+}
+
+// 현재 장바구니 개수 가져오기
+function getCurrentCartCount() {
+    const cartBadge = document.getElementById('cartBadge');
+    if (cartBadge && cartBadge.style.display !== 'none') {
+        return parseInt(cartBadge.textContent);
+    }
+    return 0;
+}
+
 // 최근 본 상품 추가 함수
 function addToViewedProducts(productId) {
     // 로그인 상태 확인
@@ -118,6 +140,9 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(response => response.json())
     .then(data => {
       if (data && data.cart_items && Array.isArray(data.cart_items)) {
+        // 장바구니 배지 업데이트
+        updateCartBadge(data.cart_items.length);
+
         data.cart_items.forEach(productId => {
           const heartBtn = document.querySelector(`button[data-product-id="${productId}"]`);
           if (heartBtn) {
@@ -141,6 +166,7 @@ function toggleWishlist(event, productId) {
   const button = event.currentTarget;
   const heartIcon = button.querySelector('i');
   const isFilled = heartIcon.classList.contains('bi-heart-fill');
+  const currentCount = getCurrentCartCount();
 
   if (isFilled) {
     // 장바구니에서 제거
@@ -159,6 +185,7 @@ function toggleWishlist(event, productId) {
 
         if (data.success) {
           setHeartFilled(heartIcon, false);
+          updateCartBadge(currentCount - 1);
         } else {
           alert('삭제에 실패했습니다.');
         }
@@ -184,6 +211,7 @@ function toggleWishlist(event, productId) {
 
         if (data.success) {
           setHeartFilled(heartIcon, true);
+          updateCartBadge(currentCount + 1);
           showToast('장바구니에 추가되었습니다!');
         } else {
           alert('추가에 실패했습니다.');
