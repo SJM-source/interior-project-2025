@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.fields.simple import StringField, TextAreaField, PasswordField, EmailField
-from wtforms.validators import DataRequired, Length, EqualTo, Email, Regexp
+from wtforms.validators import DataRequired, Length, EqualTo, Email, Regexp, Optional
 
 #회원 가입 폼
 class UserCreateForm(FlaskForm):
@@ -17,3 +17,10 @@ class UserCreateForm(FlaskForm):
 class UserLoginForm(FlaskForm):
     username=StringField('사용자이름', validators=[DataRequired(), Length(min=3, max=25)])
     password=PasswordField('비밀번호', validators=[DataRequired()])
+
+#회원정보 수정
+class EditProfileForm(FlaskForm):
+    username = StringField('사용자 이름', validators=[DataRequired(), Length(min=3, max=20)])
+    email = StringField('이메일', validators=[Optional(), Email()])
+    phone = StringField('전화번호', validators=[Optional(), Length(min=9, max=20)])
+    password = PasswordField('새 비밀번호', validators=[Optional(), Length(min=4)])
