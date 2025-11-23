@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, jsonify, g, session
 from sprout import db
-from sprout.models import Cart, CartItem, Product
+from sprout.models import Cart, CartItem, Product, ViewedProduct
+from collections import Counter
 import json
 import math
 
@@ -57,7 +58,58 @@ def load_products():
         return []
 
 
-# ========== sub 페이지 (검색 + 필터 + 페이지네이션) ==========
+# ========== 추천 상품 가져오기 함수 ==========
+def get_recommended_products(user_id, limit=5):
+    """
+    사용자의 최근 조회 상품을 기반으로 같은 스타일의 상품 추천
+    """
+    if not user_id:
+        return []
+
+    print(f"\n=== 추천 상품 생성 ===")
+    print(f"사용자 ID: {user_id}")
+
+    # 1. 사용자가 최근 본 상품들 가져오기 (최근 20개)
+    viewed_products = ViewedProduct.query.filter_by(user_id=user_id) \
+        .order_by(ViewedProduct.viewed_date.desc()) \
+        .limit(10) \
+        .all()
+
+    if not viewed_products:
+        print("  ⚠️ 최근 본 상품이 없습니다")
+        return []
+
+    viewed_product_ids = [vp.product_id for vp in viewed_products]
+    print(f"  최근 본 상품 수: {len(viewed_product_ids)}")
+
+    # 2. 본 상품들의 스타일 직접 사용 (ViewedProduct에 스타일 정보 저장됨)
+    viewed_styles = [vp.style for vp in viewed_products if vp.style]
+
+    if not viewed_styles:
+        print("  ⚠️ 스타일 정보가 있는 상품이 없습니다")
+        return []
+
+    # 3. 가장 많이 본 스타일 찾기
+    style_counter = Counter(viewed_styles)
+    most_common_styles = [style for style, count in style_counter.most_common(3)]
+    print(f"  선호 스타일: {most_common_styles}")
+
+    # 4. 같은 스타일의 상품 중 아직 안 본 상품 추천
+    recommended = Product.query \
+        .filter(Product.style.in_(most_common_styles)) \
+        .filter(~Product.id.in_(viewed_product_ids)) \
+        .order_by(db.func.random()) \
+        .limit(limit) \
+        .all()
+
+    print(f"  추천 상품 수: {len(recommended)}")
+    for rec in recommended:
+        print(f"    - {rec.name} ({rec.style})")
+
+    return recommended
+
+
+# ========== sub 페이지 (검색 + 필터 + 페이지네이션 + 추천) ==========
 @bp.route('/sub')
 def sub():
     products = load_products()
@@ -106,6 +158,11 @@ def sub():
 
     product_list = ProductPagination(current_products, page, per_page, total)
 
+    # 추천 상품 가져오기 (로그인한 경우에만)
+    recommended_products = []
+    if session.get('user_id'):
+        recommended_products = get_recommended_products(session['user_id'], limit=5)
+
     # sub.html로 전달
     return render_template(
         'sub.html',
@@ -113,7 +170,8 @@ def sub():
         selected_styles=selected_styles,
         selected_brands=selected_brands,
         search_query=search_query,
-        current_sort=sort_by
+        current_sort=sort_by,
+        recommended_products=recommended_products  # 추천 상품 추가
     )
 
 
@@ -162,7 +220,7 @@ def cart_add():
         print(f"  ❌ 상품을 찾을 수 없음 (Product ID: {product_id})")
         return jsonify({'success': False, 'message': 'Product not found'}), 404
 
-    # 4. CartItem 생성 시 username + 상품 정보 함께 저장 (수량 기본값 1)
+    # 4. CartItem 생성 시 username + 상품 정보 함께 저장
     new_item = CartItem(
         cart_id=cart.id,
         username=g.user.username,  # username 저장
